@@ -5,16 +5,18 @@
 
 }
 
+<link rel="stylesheet" href="~/css/nicepage.css" media="screen" />
+<link rel="stylesheet" href="~/css/Videos.css" media="screen" />
+
 <section class="u-clearfix u-section-1" id="sec-73cd">
     <div class="u-clearfix u-sheet u-sheet-1">
         <div class="u-expanded-width u-list u-list-1">
             <div class="u-repeater u-repeater-1">
-
                 @foreach (VideoInfo info in Model.VideoInfos)
                 {
                     <div class="u-container-style u-list-item u-repeater-item">
-                        <a class="u-container-layout u-similar-container u-container-layout-1" href="/player/@info.FullName">
-                            <img alt="" class="u-expanded-width u-image u-image-round u-radius-11 u-image-1" data-image-width="2000" data-image-height="1333" src ="@info.Thumbnail">
+                        <a class="u-container-layout u-similar-container u-container-layout-1" href="/player/@info.Id">
+                            <img class="u-expanded-width u-image u-image-round u-radius-11 u-image-1" data-image-width="2000" data-image-height="1333" src ="@info.Thumbnail">
                             <h3 class="u-align-center u-text u-text-default u-text-1">@info.Name</h3>
                         </a>
                     </div>

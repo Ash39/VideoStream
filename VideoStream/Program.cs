@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using VideoStream.Data;
+using VideoStream.Services;
 
 namespace VideoStream
 {
@@ -12,14 +13,17 @@ namespace VideoStream
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            builder.Services.AddDbContextFactory<ApplicationDbContext>(options => 
+            {
+                options.UseSqlite(connectionString);
+            });
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllers();
             builder.Services.AddRazorPages();
+            builder.Services.AddHostedService<VideoScannerService>();
             
 
             var app = builder.Build();
@@ -45,6 +49,7 @@ namespace VideoStream
 
             app.MapControllers();
             app.MapRazorPages();
+
 
             app.Run();
         }

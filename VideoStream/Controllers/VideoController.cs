@@ -1,6 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FFMpegCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.FileProviders;
+using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
 using VideoStream.Data;
+using VideoStream.Data.Medias;
 
 namespace VideoStream.Controllers
 {
@@ -8,20 +15,31 @@ namespace VideoStream.Controllers
     [Route("api/[controller]")]
     public class VideoController : Controller
     {
-        readonly IWebHostEnvironment env;
+        private readonly ApplicationDbContext context;
 
-        public VideoController(IWebHostEnvironment env)
+        public VideoController(IDbContextFactory<ApplicationDbContext> contextFactory)
         {
-            this.env = env;
+            this.context = contextFactory.CreateDbContext();
         }
 
         [HttpGet]
-        public IActionResult Stream(string filename)
+        public IActionResult Stream(Guid id)
         {
-            VideoData video = new VideoData(VideoList.Get(filename));
+            VideoInfo? info = context.VideoInfo.Find(id);
+            if (info != null)
+            {
+                context.VideoInfo.Entry(info).Reference(b => b.Path).Load();
 
-            return new PushStreamContent(video.WriteToStream, "video/" + Path.GetExtension(filename));
+                if (info.Path != null)
+                {
+                    if (info.Path.Path != null)
+                    {
+                        return new VideoContent(info.Path.Path);
+                    }
+                }
+            }
+
+            return NotFound();
         }
-
     }
 }

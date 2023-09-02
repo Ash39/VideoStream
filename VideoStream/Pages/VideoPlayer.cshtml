@@ -1,13 +1,7 @@
-﻿@page "/player/{file}"
+﻿@page "/player/{id}"
 @model VideoStream.Pages.VideoPlayerModel
 
 
-<section class="u-clearfix u-section-1" id="sec-5c16">
-    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <video id="player_stream" controls height="720" preload="none" style="position: absolute;top: 0;left: 0;width: 100%;" class="embed-responsive-item">
-            <source src="/api/Video?filename=@Model.File" />
-        </video>
-    </div>
-</section>
-
-
+<video id="player_stream" controls controlslist="nodownload" preload="metadata" style="width: 100%;">
+    <source src="/api/Video?id=@Model?.VideoInfo?.Id" type="video/@Model?.VideoInfo?.MediaType" />
+</video>
