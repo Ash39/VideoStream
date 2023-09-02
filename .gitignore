@@ -362,3 +362,9 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 VideoStream/dev-app.db
+VideoStream/ffmpeg.exe
+VideoStream/ffplay.exe
+.gitignore
+VideoStream/ffprobe.exe
+.gitignore
+VideoStream/wwwroot/video/SampleVideo_1280x720_30mb (2).mp4
